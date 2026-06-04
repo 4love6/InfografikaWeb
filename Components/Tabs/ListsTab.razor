@@ -1,0 +1,100 @@
+<h2>Списки</h2>
+
+<div class="form-group">
+    <p><b>Выбери тип списка:</b></p>
+    @foreach (var type in listTypes)
+    {
+        <label class="radio-label">
+            <input type="radio" name="listType" 
+                   checked="@(selectedType == type)"
+                   @onchange="() => selectedType = type" />
+            @type
+        </label>
+    }
+</div>
+
+<p><b>Сейчас выбран:</b> @selectedType</p>
+
+<div class="form-group">
+    <input type="text" 
+           class="text-input"
+           placeholder="Новый пункт"
+           @bind="newItemText" />
+    <div class="buttons-row">
+        <button class="btn btn-primary" @onclick="AddItem">Добавить</button>
+        <button class="btn btn-outline" @onclick="RemoveLast">Удалить последний</button>
+        <button class="btn btn-outline" @onclick="ClearAll">Очистить</button>
+    </div>
+</div>
+
+<h3>Элементы списка (всего: @items.Count):</h3>
+
+@if (items.Count == 0)
+{
+    <p>Пока список пуст.</p>
+}
+else
+{
+    @for (int i = 0; i < items.Count; i++)
+    {
+        var index = i;
+        var item = items[index];
+        <div class="list-card">
+            @if (selectedType == "Маркированный")
+            {
+                <span class="marker">•</span>
+            }
+            else if (selectedType == "Нумерованный")
+            {
+                <span class="marker">@(index + 1).</span>
+            }
+            else if (selectedType == "С флажками")
+            {
+                <input type="checkbox" 
+                       checked="@item.Checked"
+                       @onchange="e => ToggleCheck(index, (bool)e.Value!)" />
+            }
+            <span class="item-text">@item.Text</span>
+            <button class="btn-delete" @onclick="() => RemoveAt(index)">X</button>
+        </div>
+    }
+}
+
+@code {
+    private string[] listTypes = { "Маркированный", "Нумерованный", "С флажками" };
+    private string selectedType = "Маркированный";
+    private string newItemText = "";
+    private List<ListItem> items = new();
+
+    private void AddItem()
+    {
+        if (!string.IsNullOrWhiteSpace(newItemText))
+        {
+            items.Add(new ListItem { Text = newItemText.Trim() });
+            newItemText = "";
+        }
+    }
+
+    private void RemoveLast()
+    {
+        if (items.Count > 0) items.RemoveAt(items.Count - 1);
+    }
+
+    private void RemoveAt(int index)
+    {
+        items.RemoveAt(index);
+    }
+
+    private void ClearAll() => items.Clear();
+
+    private void ToggleCheck(int index, bool value)
+    {
+        items[index].Checked = value;
+    }
+
+    public class ListItem
+    {
+        public string Text { get; set; } = "";
+        public bool Checked { get; set; }
+    }
+}

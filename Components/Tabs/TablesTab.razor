@@ -1,0 +1,80 @@
+<h2>Таблицы</h2>
+
+<div class="size-controls">
+    <div class="size-control">
+        <label>Строк:</label>
+        <input type="number" min="1" max="20" 
+               value="@rows" 
+               @onchange="OnRowsChanged" />
+    </div>
+    <div class="size-control">
+        <label>Столбцов:</label>
+        <input type="number" min="1" max="10" 
+               value="@cols" 
+               @onchange="OnColsChanged" />
+    </div>
+</div>
+
+<table class="data-table">
+    <tbody>
+        @for (int r = 0; r < rows; r++)
+        {
+            var rowIndex = r;
+            <tr>
+                @for (int c = 0; c < cols; c++)
+                {
+                    var colIndex = c;
+                    <td>
+                        <input type="text" 
+                               class="cell-input"
+                               value="@GetCell(rowIndex, colIndex)"
+                               @onchange="e => SetCell(rowIndex, colIndex, e.Value?.ToString() ?? string.Empty)" />
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="table-actions">
+    <button class="btn btn-outline" @onclick="ClearTable">Очистить таблицу</button>
+</div>
+
+@code {
+    private int rows = 3;
+    private int cols = 3;
+    private Dictionary<string, string> cells = new();
+
+    private string GetCell(int r, int c)
+    {
+        var key = $"{r}_{c}";
+        return cells.TryGetValue(key, out var v) ? v : "";
+    }
+
+    private void SetCell(int r, int c, string value)
+    {
+        var key = $"{r}_{c}";
+        cells[key] = value;
+    }
+
+    private void OnRowsChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var newRows) && newRows >= 1 && newRows <= 20)
+        {
+            rows = newRows;
+        }
+    }
+
+    private void OnColsChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var newCols) && newCols >= 1 && newCols <= 10)
+        {
+            cols = newCols;
+        }
+    }
+
+    private void ClearTable()
+    {
+        cells.Clear();
+    }
+}

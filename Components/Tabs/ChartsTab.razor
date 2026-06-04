@@ -1,0 +1,119 @@
+@inject IJSRuntime JS
+
+<h2>Диаграммы</h2>
+
+<div class="form-group">
+    <p><b>Тип диаграммы:</b></p>
+    <div class="chart-types">
+        @foreach (var type in chartTypes)
+        {
+            <button class="btn @(selectedType == type.Key ? "btn-primary" : "btn-outline")"
+                    @onclick="() => SelectType(type.Key)">
+                @type.Value
+            </button>
+        }
+    </div>
+</div>
+
+<div class="form-group">
+    <input type="text" 
+           class="text-input"
+           placeholder="Формат: Кошка 10, Собака 33, Вода 50"
+           @bind="dataText" />
+    <p class="hint-text">Пары «название число» через запятую</p>
+</div>
+
+<button class="btn btn-primary" @onclick="BuildChart">Построить диаграмму</button>
+
+@if (!string.IsNullOrEmpty(errorText))
+{
+    <p class="error-text">@errorText</p>
+}
+
+<div class="chart-container">
+    <canvas id="myChart"></canvas>
+</div>
+
+@if (labels.Count > 0)
+{
+    <div class="data-legend">
+        <p><b>Данные:</b></p>
+        @for (int i = 0; i < labels.Count; i++)
+        {
+            <p>• @labels[i] — @values[i]</p>
+        }
+    </div>
+}
+
+@code {
+    private Dictionary<string, string> chartTypes = new()
+    {
+        { "bar", "Столбчатая" },
+        { "pie", "Круговая" },
+        { "line", "Линейная" },
+        { "radar", "Лепестковая" },
+        { "scatter", "Точечная" },
+        { "area", "С областями" }
+    };
+
+    private string selectedType = "bar";
+    private string dataText = "";
+    private string errorText = "";
+    private List<string> labels = new();
+    private List<double> values = new();
+
+    private void SelectType(string type)
+    {
+        selectedType = type;
+        if (labels.Count > 0)
+        {
+            _ = RenderChartAsync();
+        }
+    }
+
+    private async Task BuildChart()
+    {
+        errorText = "";
+        var newLabels = new List<string>();
+        var newValues = new List<double>();
+
+        try
+        {
+            var parts = dataText.Split(',', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var part in parts)
+            {
+                var trimmed = part.Trim();
+                var lastSpace = trimmed.LastIndexOf(' ');
+                if (lastSpace == -1)
+                {
+                    throw new Exception("Нужен пробел между названием и числом");
+                }
+                var label = trimmed.Substring(0, lastSpace).Trim();
+                var valueStr = trimmed.Substring(lastSpace + 1).Trim().Replace(',', '.');
+                var value = double.Parse(valueStr, System.Globalization.CultureInfo.InvariantCulture);
+                newLabels.Add(label);
+                newValues.Add(value);
+            }
+
+            if (newLabels.Count == 0)
+            {
+                errorText = "Введите хотя бы одну пару";
+                return;
+            }
+
+            labels = newLabels;
+            values = newValues;
+            await RenderChartAsync();
+        }
+        catch
+        {
+            errorText = "Ошибка: формат «название число», пары через запятую";
+        }
+    }
+
+    private async Task RenderChartAsync()
+    {
+        await Task.Delay(50); // дать время отрисоваться canvas
+        await JS.InvokeVoidAsync("renderChart", "myChart", selectedType, labels, values);
+    }
+}

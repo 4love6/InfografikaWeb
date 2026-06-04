@@ -1,0 +1,268 @@
+/* ===== ОБЩИЕ СТИЛИ ===== */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f7;
+    color: #1c1b1f;
+}
+
+/* ===== КОНТЕЙНЕР ПРИЛОЖЕНИЯ ===== */
+.app-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    background: white;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.app-title {
+    color: #1c1b1f;
+    font-size: 28px;
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+/* ===== ВКЛАДКИ ===== */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 24px;
+}
+
+.tab {
+    padding: 14px 28px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.tab:hover {
+    background: #f0f0f0;
+}
+
+.tab.active {
+    color: #6750A4;
+    border-bottom: 3px solid #6750A4;
+    font-weight: 600;
+}
+
+.content {
+    padding: 16px 0;
+}
+
+/* ===== ФОРМЫ И КНОПКИ ===== */
+.form-group {
+    margin: 16px 0;
+}
+
+.text-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #6750A4;
+    border-radius: 6px;
+    font-family: inherit;
+    outline: none;
+}
+
+.text-input:focus {
+    border-color: #4a3a7a;
+    box-shadow: 0 0 0 2px rgba(103, 80, 164, 0.2);
+}
+
+.btn {
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    font-family: inherit;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background: #6750A4;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5a4593;
+}
+
+.btn-outline {
+    background: white;
+    border: 1px solid #6750A4;
+    color: #6750A4;
+}
+
+.btn-outline:hover {
+    background: #f5f0fa;
+}
+
+.buttons-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* ===== СПИСКИ ===== */
+.radio-label {
+    display: block;
+    padding: 6px 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.list-card {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: #f7f5fa;
+    border-radius: 8px;
+    margin: 8px 0;
+    gap: 12px;
+}
+
+.marker {
+    font-weight: bold;
+    font-size: 18px;
+    color: #6750A4;
+}
+
+.item-text {
+    flex: 1;
+    font-size: 16px;
+}
+
+.btn-delete {
+    background: none;
+    border: none;
+    color: #d12828;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.btn-delete:hover {
+    background: #ffebee;
+}
+
+
+/* ===== ТАБЛИЦЫ ===== */
+.size-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.size-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.size-control label {
+    font-weight: 600;
+    color: #1c1b1f;
+}
+
+.size-control input {
+    width: 60px;
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #6750A4;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.data-table {
+    border-collapse: collapse;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.data-table td {
+    border: 1px solid #6750A4;
+    padding: 0;
+}
+
+.cell-input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    outline: none;
+    background: white;
+    font-size: 14px;
+    font-family: inherit;
+    text-align: center;
+}
+
+.cell-input:focus {
+    background: #f5f0fa;
+}
+
+.table-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* ===== ДИАГРАММЫ ===== */
+.chart-types {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.hint-text {
+    font-size: 13px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.error-text {
+    color: #d32f2f;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.data-legend {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f7f5fa;
+    border-radius: 6px;
+}
+
+.data-legend p {
+    margin: 4px 0;
+}

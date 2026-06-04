@@ -1,0 +1,39 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Конструктор инфографики</PageTitle>
+
+<div class="app-container">
+    <h1 class="app-title">Конструктор инфографики</h1>
+
+    <div class="tabs">
+        <button class="tab @(activeTab == 0 ? "active" : "")" 
+                @onclick="() => activeTab = 0">
+            Диаграммы
+        </button>
+        <button class="tab @(activeTab == 1 ? "active" : "")" 
+                @onclick="() => activeTab = 1">
+            Таблицы
+        </button>
+        <button class="tab @(activeTab == 2 ? "active" : "")" 
+                @onclick="() => activeTab = 2">
+            Списки
+        </button>
+    </div>
+
+    <div class="content">
+        <div style="@(activeTab == 0 ? "" : "display:none")">
+            <ChartsTab />
+        </div>
+        <div style="@(activeTab == 1 ? "" : "display:none")">
+            <TablesTab />
+        </div>
+        <div style="@(activeTab == 2 ? "" : "display:none")">
+            <ListsTab />
+        </div>
+    </div>
+</div>
+
+@code {
+    private int activeTab = 0;
+}
